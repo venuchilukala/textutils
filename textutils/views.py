@@ -1,7 +1,14 @@
 from django.http import HttpResponse
+from django.shortcuts import render 
+
+
 
 def index(request):
-    return HttpResponse('<h1>Home</h1>')
+    
+    params = {'name' : 'venu', 'place' : 'hyderabad'}
+    
+    return render(request, 'index.html', params)
+    # return HttpResponse('<h1>Home</h1>')
 
 def removepunc(request):
     return HttpResponse('<p>Remove punctuation</p>')
