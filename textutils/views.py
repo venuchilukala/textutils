@@ -12,6 +12,8 @@ def analyze(request):
     dj_text = request.GET.get('text', 'default')
     
     #Get status of check box of utils
+    #request.GET => to get query params in GET request 
+    # get('removepunc', 'off') => to get value of a 'removepunc'
     removepunc = request.GET.get('removepunc', 'off')
     capsall = request.GET.get('capsall', 'off')
     newlineremover = request.GET.get('newlineremover', 'off')
