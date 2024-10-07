@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render 
 
 
-
 def index(request):
     return render(request, 'index.html')
     # return HttpResponse('<h1>Home</h1>')
@@ -19,57 +18,51 @@ def analyze(request):
     extraspaceremove = request.POST.get('extraspaceremove', 'off')
     charcount = request.POST.get('charcount', 'off')
      
+    analyzed_text = ""
+    purpose = []
    #Render the result
     if removepunc == 'on':
         punctuations = '''.,?!:;'"()[]—-…/^_&'''
-        analyzed_text = ""
         for char in dj_text:
             if char not in punctuations:
                 analyzed_text += char        
-        params ={
-            'purpose' : 'Removed Punctuations',
-            'analyzed_text' : analyzed_text
-        }
-        return render(request,'analyze.html',params)
+        dj_text = analyzed_text
+        purpose.append('Removed Punctuations')
     
-    elif capsall == 'on':
+    if capsall == 'on':
         analyzed_text = dj_text.upper()
-        params = {
-            'purpose' : 'Capitalized the Text',
-            'analyzed_text' : analyzed_text
-        }
-        return render(request, 'analyze.html', params)
+        dj_text = analyzed_text
+        purpose.append('Capitalized the Text')
     
-    elif newlineremover == 'on':
+    if newlineremover == 'on':
         analyzed_text = ''
         for char in dj_text:
             if char != '\n' and char != '\r':
-                analyzed_text += char       
-        params = {
-            'purpose' : 'New Lines Removed',
-            'analyzed_text' : analyzed_text
-        }
-        return render(request, 'analyze.html', params)
+                analyzed_text += char 
+        dj_text = analyzed_text
+        purpose.append('New Lines Removed')
     
-    elif extraspaceremove == 'on':
+    if extraspaceremove == 'on':
         analyzed_text = ''      
         for index, char in enumerate(dj_text):
             if not(dj_text[index] == ' ' and dj_text[index+1] == ' '):
                 analyzed_text += char         
-        params = {
-            'purpose' : 'Extra Spaces Removed',
-            'analyzed_text' : analyzed_text
-        }
-        return render(request, 'analyze.html', params)
+        dj_text = analyzed_text
+        purpose.append('Extra Spaces Removed')
         
+    char_count_message = ''
     
-    elif charcount == 'on':
-        analyzed_text = 'The no of characters are : ' +  str(len(dj_text))
-        params = {
-            'purpose' : 'Extra Spaces Removed',
-            'analyzed_text' : analyzed_text
-        }    
-        return render(request, 'analyze.html', params)
+    if charcount == 'on':
+        char_count_message = f"The number of characters are: {len(dj_text)}"
+        purpose.append('Characters counted')
+         
         
+    params ={
+            'purpose' : ', '.join(purpose) if purpose else 'No operations done',
+            'analyzed_text' : analyzed_text + (f"<br>{char_count_message}" if char_count_message else '')
+        }
+    
+    if(removepunc != 'on' and capsall != 'on' and newlineremover != 'on' and extraspaceremove != 'on' and charcount != 'on'):    
+        return HttpResponse('Please Select any operationtion')
     else:
-        return HttpResponse('Error')
+        return render(request, 'analyze.html', params)
