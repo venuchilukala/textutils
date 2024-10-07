@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Template Test</title>
+    <title>Text Utils</title>
+    <style>
+        .container{
+            width: 56%;
+            margin: auto;
+        }
+        .text-area {
+            width: 840px;
+            height: 200px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Template is working</h1>
-    <p>{{name}} is from {{place}}</p>
+    <div class="container">
+        <h1>Welcome to Text Analyzer</h1>
+        <h3>Enter your text below</h3>
+        <form action="/analyze" method="get">
+            <textarea class="text-area" name="text"></textarea>
+            <input type="checkbox" name="removepunc">Remove Punctuations
+            <br>
+            <button type="submit">Analyze Text</button>
+        </form>
+    </div>
 </body>
+
 </html>
