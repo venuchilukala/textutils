@@ -9,16 +9,15 @@ def index(request):
 
 def analyze(request):
     #Get text in the text area
-    dj_text = request.GET.get('text', 'default')
-    
+    dj_text = request.POST.get('text', 'default')
     #Get status of check box of utils
     #request.GET => to get query params in GET request 
     # get('removepunc', 'off') => to get value of a 'removepunc'
-    removepunc = request.GET.get('removepunc', 'off')
-    capsall = request.GET.get('capsall', 'off')
-    newlineremover = request.GET.get('newlineremover', 'off')
-    extraspaceremove = request.GET.get('extraspaceremove', 'off')
-    charcount = request.GET.get('charcount', 'off')
+    removepunc = request.POST.get('removepunc', 'off')
+    capsall = request.POST.get('capsall', 'off')
+    newlineremover = request.POST.get('newlineremover', 'off')
+    extraspaceremove = request.POST.get('extraspaceremove', 'off')
+    charcount = request.POST.get('charcount', 'off')
      
    #Render the result
     if removepunc == 'on':
@@ -44,7 +43,7 @@ def analyze(request):
     elif newlineremover == 'on':
         analyzed_text = ''
         for char in dj_text:
-            if char != '\n':
+            if char != '\n' and char != '\r':
                 analyzed_text += char       
         params = {
             'purpose' : 'New Lines Removed',
